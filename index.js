@@ -54,7 +54,10 @@ async function powerHack() {
         $set: user,
       };
       const result = await userCollection.updateOne(filter, updateDoc, options);
-      res.send(result);
+      const token = jwt.sign({ Email: email }, process.env.JWT_ACCESS_TOKEN, {
+        expiresIn: "1h",
+      });
+      res.send({ result, token });
     });
 
     app.post("/login/:email", async (req, res) => {
@@ -66,16 +69,8 @@ async function powerHack() {
       const dataEmail = dataInfo?.email;
       const dataPass = dataInfo?.password;
       if (userEmail === dataEmail && userPass === dataPass) {
-        const accessToken = jwt.sign(
-          {
-            email: req.params.email,
-          },
-          process.env.JWT_ACCESS_TOKEN,
-          { expiresIn: "1h" }
-        );
         res.send({
           success: true,
-          token: accessToken,
         });
       } else {
         res.send({ success: false });
@@ -100,7 +95,7 @@ async function powerHack() {
           .limit(size)
           .toArray();
       } else {
-        data = await cursor.toArray();
+        data = await (await cursor.toArray());
       }
 
       res.send(data);
