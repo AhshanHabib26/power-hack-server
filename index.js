@@ -87,7 +87,8 @@ async function powerHack() {
       const page = parseInt(req.query.page);
       const size = parseInt(req.query.size);
       const query = {};
-      const cursor = userDataCollection.find(query);
+      const dataSort = { name: -1}
+      const cursor = userDataCollection.find(query).sort(dataSort);
       let data;
       if (page || size) {
         data = await cursor
