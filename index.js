@@ -139,18 +139,18 @@ async function powerHack() {
     res.send(result);
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
+  app.get('/billing-list-search-email', async (req, res) => {
+    const value = req.query.value;
+    const search = req.query.search;
+    const cursor = {}
+    const result =  userDataCollection.find(cursor)
+    if( value === search){
+      await result.toArray()
+      res.send(result)
+    }else{
+      return res.send({ success: false });
+    }
+})
 
 
   } finally {
