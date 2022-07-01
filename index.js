@@ -54,7 +54,7 @@ async function powerHack() {
         $set: user,
       };
       const result = await userCollection.updateOne(filter, updateDoc, options);
-      const token = jwt.sign({ Email: email }, process.env.JWT_ACCESS_TOKEN, {
+      const token = jwt.sign({ email: email }, process.env.JWT_ACCESS_TOKEN, {
         expiresIn: "1h",
       });
       res.send({ result, token });
